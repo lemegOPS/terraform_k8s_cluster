@@ -57,7 +57,6 @@ variable "cidr_block" {
   default = {
     external = "0.0.0.0/0"
     internal = "10.0.0.0/16"
-    local_external_ip = "0.0.0.0/0"
   }
   description = "Cidr Block map. Use for network"
 }
