@@ -45,7 +45,7 @@ data "terraform_remote_state" "bucket_tfstate_data" {
   config = {
     bucket  = aws_s3_bucket.bucket_state.id
     key     = aws_s3_object.bucket_tfstate_upload.id
-    region  = lookup(var.region, var.tags["Environment"])
-    profile = lookup(var.profile, var.tags["Environment"])
+    region  = var.region
+    profile = var.profile
   }
 }

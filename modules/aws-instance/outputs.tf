@@ -15,7 +15,6 @@ output "server_info" {
       "---------------------------------------",
       "######### Manegment info #########",
       "Project: ${server.tags["Project"]}",
-      "Owner: ${server.tags["Owner"]}",
       "Environment: ${server.tags["Environment"]}"
     ]
   }

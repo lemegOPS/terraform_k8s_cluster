@@ -33,36 +33,3 @@ sudo systemctl enable --now kubelet
 wget -O dind-cluster.sh https://github.com/kubernetes-sigs/kubeadm-dind-cluster/releases/download/v0.2.0/dind-cluster-v1.14.sh 
 chmod +x dind-cluster.sh
 sudo ./dind-cluster.sh up
-
-:'
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/bin/minikube
-
-
-minikube start -n 3 -p k8s-mini --force --disk-size 2000mb
-
-cd /home/ec2-user
-git clone https://github.com/collabnix/kubelabs
-cd kubelabs
-chmod a+x bootstrap.sh
-sudo sh bootstrap.sh
-
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-'
-
-#----- K8S play ground install -----#
-#cd /home/ec2-user
-#git clone https://github.com/play-with-docker/play-with-docker
-#cd play-with-docker
-#sudo modprobe xt_ipvs
-#docker swarm init
-#docker pull franela/dind
-#go mod vendor
-#docker-compose up -d
-
-#cd /home/ec2-user
-#git clone https://github.com/play-with-docker/play-with-kubernetes.github.io.git
-#cd play-with-kubernetes.github.io
-#docker-compose up -d

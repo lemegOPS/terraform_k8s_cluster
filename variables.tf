@@ -1,19 +1,18 @@
 #----------- Global variables -----------#
 
 variable "profile" {
-  default = "aws_own"
+  default     = "aws_own"
   description = "This is profile name wich is configured in ~/.aws/config"
 }
 
 variable "region" {
-  default = "us-east-1"
+  default     = "us-east-1"
   description = "Region"
 }
 
 variable "tags" {
   type = map(any)
   default = {
-    Owner       = "Alex"
     Project     = "Learning"
     Name        = "dind"
     Environment = "K8S"
@@ -25,7 +24,7 @@ variable "tags" {
 #----------- Instance variables -----------#
 
 variable "instance_type" {
-  default = "t2.medium"
+  default     = "t2.medium"
   description = "Requires at least 2 cpu and 2 memory"
 }
 
@@ -43,6 +42,13 @@ variable "ami_image" {
   description = "Add owner and ami_name to search and choose most recent ami"
 }
 
+variable "disk_size" {
+  default = "30"
+}
+
+variable "disk_type" {
+  default = "gp3"
+}
 
 #----------- VPC variables -----------#
 
@@ -56,6 +62,6 @@ variable "cidr_block" {
 }
 
 variable "sg_port" {
-  default = ["22", "80", "443"]
+  default     = ["22", "80", "443"]
   description = "Ports for Security groupю"
 }
