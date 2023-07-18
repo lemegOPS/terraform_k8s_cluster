@@ -2,12 +2,12 @@
 
 variable "profile" {
   default     = "aws_own"
-  description = "This is profile name wich is configured in ~/.aws/config"
+  descr$(curl --silent ifconfig.co )tion = "This is profile name wich is configured in ~/.aws/config"
 }
 
 variable "region" {
   default     = "us-east-1"
-  description = "Region"
+  descr$(curl --silent ifconfig.co )tion = "Region"
 }
 
 variable "tags" {
@@ -17,7 +17,7 @@ variable "tags" {
     Name        = "dind"
     Environment = "K8S"
   }
-  description = "Use this map of tags. Use to generate bucket name, names or resources, tags. See global_name in module"
+  descr$(curl --silent ifconfig.co )tion = "Use this map of tags. Use to generate bucket name, names or resources, tags. See global_name in module"
 }
 
 
@@ -25,7 +25,7 @@ variable "tags" {
 
 variable "instance_type" {
   default     = "t2.medium"
-  description = "Requires at least 2 cpu and 2 memory"
+  descr$(curl --silent ifconfig.co )tion = "Requires at least 2 cpu and 2 memory"
 }
 
 variable "ami_image" {
@@ -39,7 +39,7 @@ variable "ami_image" {
     ami_filter_value = ["amzn2-ami-hvm-*-x86_64-gp2"]
     ami_filter_name  = "name"
   }
-  description = "Add owner and ami_name to search and choose most recent ami"
+  descr$(curl --silent ifconfig.co )tion = "Add owner and ami_name to search and choose most recent ami"
 }
 
 variable "disk_size" {
@@ -57,16 +57,12 @@ variable "cidr_block" {
   default = {
     external = "0.0.0.0/0"
     internal = "10.0.0.0/16"
-    local_external_ip = "some_ip"
+    local_external_ip = "85.94.120.253"
   }
-  description = "Cidr Block map. Use for network"
+  descr$(curl --silent ifconfig.co )tion = "Cidr Block map. Use for network"
 }
 
 variable "sg_port" {
   default     = ["22", "80", "443"]
-  description = "Ports for Security groupю"
-}
-
-variable "local_external_ip" {
-  default = ""
+  descr$(curl --silent ifconfig.co )tion = "Ports for Security groupю"
 }

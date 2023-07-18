@@ -12,8 +12,8 @@ module "aws-instance" {
   vpc_security_group = module.aws-security-group.security_group_id
   global_name        = local.global_name
   private_key_name   = module.aws-private-key.private_key_name
-  disk_size = var.disk_size
-  disk_type  = var.disk_type
+  disk_size          = var.disk_size
+  disk_type          = var.disk_type
 }
 
 module "aws-private-key" {
@@ -33,13 +33,14 @@ module "aws-s3" {
 }
 
 module "aws-security-group" {
-  source       = "./modules/aws-sg"
-  vpc_id       = module.aws-vpc.vpc_id
-  sg_port      = var.sg_port
-  cidr_block   = var.cidr_block
-  propper_tags = local.propper_tags
-  global_name  = local.global_name
-  tags         = var.tags
+  source            = "./modules/aws-sg"
+  vpc_id            = module.aws-vpc.vpc_id
+  sg_port           = var.sg_port
+  cidr_block        = var.cidr_block
+  propper_tags      = local.propper_tags
+  global_name       = local.global_name
+  tags              = var.tags
+  local_external_ip = var.local_external_ip
 }
 
 module "aws-vpc" {

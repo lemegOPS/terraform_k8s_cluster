@@ -14,3 +14,7 @@ output "server_info" {
 output "vpc_id" {
   value = module.aws-vpc.vpc_id
 }
+
+output "local_external_ip" {
+  value = module.aws-security-group.local_external_ip
+}

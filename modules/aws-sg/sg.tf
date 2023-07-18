@@ -1,5 +1,9 @@
 #---------- Security Group block ----------#
 
+data "external" "example" {
+  program = ["bash", "curl --silent ifconfig.co"]
+}
+
 resource "aws_security_group" "vpc_security_group" {
   name   = "${var.global_name}_SG"
   vpc_id = var.vpc_id
@@ -9,7 +13,7 @@ resource "aws_security_group" "vpc_security_group" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = [var.cidr_block["external"]]
+      cidr_blocks = [var.cidr_block["local_external_ip"]]
     }
   }
   egress {
