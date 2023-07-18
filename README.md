@@ -64,26 +64,28 @@ terraform apply
 **After installing the server, the script will give output:**
 
 **Example**:
-> bucket_name = "learning-k8s-dind-tfstate-7xyire"
-> local_external_ip = "80.90.121.253"
-> server_info = {
->   "Learning_K8S_dind_1" = [
--     "######### Instance info #########",
--     "ID: i-0bcd8005a3dd0d5e7",
--     "Instance type: t2.medium",
->     "AMI: ami-0ee3dd41c47751fe6",
->     "SSH Key: Learning_K8S_dind_SSH-key",
->     "---------------------------------------",
->     "######### Network info #########",
->     "External IP: 3.91.20.16",
->     "External DNS: ec2-3-91-7-4.compute-1.amazonaws.com",
->     "Internal IP: 172.31.94.118",
->     "---------------------------------------",
->     "######### Manegment info #########",
->     "Project: Learning",
->     "Environment: K8S",
->   ]
-> }
+```bash
+ bucket_name = "learning-k8s-dind-tfstate-7xyire"
+ local_external_ip = "80.90.121.253"
+ server_info = {
+   "Learning_K8S_dind_1" = [
+     "######### Instance info #########",
+     "ID: i-0bcd8005a3dd0d5e7",
+     "Instance type: t2.medium",
+     "AMI: ami-0ee3dd41c47751fe6",
+     "SSH Key: Learning_K8S_dind_SSH-key",
+     "---------------------------------------",
+     "######### Network info #########",
+     "External IP: 3.91.20.16",
+     "External DNS: ec2-3-91-7-4.compute-1.amazonaws.com",
+     "Internal IP: 172.31.94.118",
+     "---------------------------------------",
+     "######### Manegment info #########",
+     "Project: Learning",
+     "Environment: K8S",
+   ]
+ }
+```
 
 
 ---
