@@ -3,5 +3,5 @@ output "security_group_id" {
 }
 
 output "local_external_ip" {
-  value = var.local_external_ip
+  value = chomp(data.http.local_external_ip.response_body)
 }
