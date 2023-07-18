@@ -68,9 +68,9 @@ terraform apply
 > local_external_ip = "80.90.121.253"
 > server_info = {
 >   "Learning_K8S_dind_1" = [
->     "######### Instance info #########",
->     "ID: i-0bcd8005a3dd0d5e7",
->     "Instance type: t2.medium",
+-     "######### Instance info #########",
+-     "ID: i-0bcd8005a3dd0d5e7",
+-     "Instance type: t2.medium",
 >     "AMI: ami-0ee3dd41c47751fe6",
 >     "SSH Key: Learning_K8S_dind_SSH-key",
 >     "---------------------------------------",
