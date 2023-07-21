@@ -30,6 +30,10 @@ EOF
 sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 sudo systemctl enable --now kubelet
 
-wget -O dind-cluster.sh https://github.com/kubernetes-sigs/kubeadm-dind-cluster/releases/download/v0.2.0/dind-cluster-v1.14.sh 
-chmod +x dind-cluster.sh
-sudo ./dind-cluster.sh up
+
+#----- Minikube install -----#
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/bin/minikube
+
+
+minikube start --nodes ${node_ammount}

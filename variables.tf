@@ -14,8 +14,8 @@ variable "tags" {
   type = map(any)
   default = {
     Project     = "Learning"
-    Name        = "dind"
-    Environment = "K8S"
+    Name        = "K8S"
+    Environment = "test"
   }
   description = "Use this map of tags. Use to generate bucket name, names or resources, tags. See global_name in module"
 }
@@ -24,7 +24,12 @@ variable "tags" {
 #----------- Instance variables -----------#
 
 variable "instance_type" {
-  default     = "t2.medium"
+  type = map(any)
+  default = {
+    k8s_full = "t2.small"
+    dind     = "t2.medium"
+    minikube = "t2.medium"
+  }
   description = "Requires at least 2 cpu and 2 memory"
 }
 
@@ -43,12 +48,25 @@ variable "ami_image" {
 }
 
 variable "disk_size" {
-  default = "30"
+  default     = "20"
+  description = "Must be at least 20 gb sick space for normal work of k8s cluster"
 }
 
 variable "disk_type" {
-  default = "gp3"
+  default     = "gp3"
+  description = "GP3 gives optimized speed"
 }
+
+variable "k8s_full_ammount" {
+  default     = "3"
+  description = "Ammount of K8S cluster ore minikube nodes count"
+}
+
+variable "k8s_type" {
+  default     = "minikube"
+  description = "Must be k8s_full ore dind ore minikube"
+}
+
 
 #----------- VPC variables -----------#
 

@@ -14,6 +14,8 @@ module "aws-instance" {
   private_key_name   = module.aws-private-key.private_key_name
   disk_size          = var.disk_size
   disk_type          = var.disk_type
+  k8s_type           = var.k8s_type
+  k8s_full_ammount   = var.k8s_full_ammount
 }
 
 module "aws-private-key" {

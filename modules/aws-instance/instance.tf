@@ -9,11 +9,19 @@ data "aws_ami" "image" {
   }
 }
 
+data "template_file" "userdata_file" {
+  template = file("userdata.tpl")
+  vars = {
+    node_ammount = var.k8s_full_ammount
+    k8s_type     = var.k8s_type
+  }
+}
+
 resource "aws_instance" "server" {
   ami                         = data.aws_ami.image.id
-  instance_type               = var.instance_type
-  user_data                   = file("userdata.sh")
-  count                       = 1
+  instance_type               = lookup(var.instance_type, var.k8s_type)
+  user_data                   = data.template_file.userdata_file.rendered
+  count                       = var.k8s_type == "k8s_full" ? var.k8s_full_ammount : 1
   key_name                    = var.private_key_name
   vpc_security_group_ids      = [var.vpc_security_group]
   associate_public_ip_address = true

@@ -6,3 +6,5 @@ variable "global_name" {}
 variable "private_key_name" {}
 variable "disk_size" {}
 variable "disk_type" {}
+variable "k8s_type" {}
+variable "k8s_full_ammount" {}
