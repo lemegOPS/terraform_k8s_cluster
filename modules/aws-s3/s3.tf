@@ -6,23 +6,17 @@ resource "random_string" "bucket_prefix" {
   upper   = false
 }
 
-resource "aws_s3_bucket" "bucket_state" {
-  bucket = lower("${var.bucket_name}-tfstate-${random_string.bucket_prefix.id}")
+resource "aws_s3_bucket" "state_bucket" {
+  bucket        = lower("${var.bucket_name}-tfstate-${random_string.bucket_prefix.id}")
+  force_destroy = true
   lifecycle {
     prevent_destroy = false
   }
   tags = merge(var.tags, { Name = "${var.global_name}" })
 }
 
-resource "aws_s3_bucket_versioning" "bucket_versioning" {
-  bucket = aws_s3_bucket.bucket_state.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encrypt" {
-  bucket = aws_s3_bucket.bucket_state.id
+  bucket = aws_s3_bucket.state_bucket.id
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -34,7 +28,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encrypt" {
 #----------- TFstate upload block ----------#
 
 resource "aws_s3_object" "bucket_tfstate_upload" {
-  bucket = aws_s3_bucket.bucket_state.id
+  bucket = aws_s3_bucket.state_bucket.id
   source = "terraform.tfstate"
   key    = lower("${var.bucket_name}/terraform.tfstate")
   tags   = merge(var.tags, { Name = "${var.global_name}" })
@@ -43,7 +37,7 @@ resource "aws_s3_object" "bucket_tfstate_upload" {
 data "terraform_remote_state" "bucket_tfstate_data" {
   backend = "s3"
   config = {
-    bucket  = aws_s3_bucket.bucket_state.id
+    bucket  = aws_s3_bucket.state_bucket.id
     key     = aws_s3_object.bucket_tfstate_upload.id
     region  = var.region
     profile = var.profile

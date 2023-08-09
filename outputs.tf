@@ -18,3 +18,7 @@ output "server_info" {
   value       = module.aws-instance.server_info
   description = "Show server info: ID, Instance type, AMI, SSH key name, External IP ore DNS, Internal IP Project, Owner, Project, Env"
 }
+
+output "iam_role_name" {
+  value = module.aws-iam.iam_role_name
+}

@@ -16,6 +16,14 @@ resource "aws_security_group" "vpc_security_group" {
       cidr_blocks = ["${chomp(data.http.local_external_ip.response_body)}/32"]
     }
   }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.default_subnets]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0

@@ -7,4 +7,8 @@ variable "private_key_name" {}
 variable "disk_size" {}
 variable "disk_type" {}
 variable "k8s_type" {}
-variable "k8s_full_ammount" {}
+variable "k8s_full_cluster_ammount" {}
+variable "k8s_mini_cluster_ammount" {}
+variable "k8s_minikube_nodes_ammount" {}
+variable "iam_role_name" {}
+variable "bucket_name" {}

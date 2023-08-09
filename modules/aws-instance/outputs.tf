@@ -1,6 +1,6 @@
 output "server_info" {
   value = {
-    for server in aws_instance.server :
+    for server in concat(aws_instance.k8s_mini, aws_instance.k8s_full_cluster) :
     server.tags["Name"] => [
       "######### Instance info #########",
       "ID: ${server.id}",
@@ -18,8 +18,4 @@ output "server_info" {
       "Environment: ${server.tags["Environment"]}"
     ]
   }
-}
-
-output "servers" {
-  value = aws_instance.server[*].id
 }

@@ -26,9 +26,9 @@ variable "tags" {
 variable "instance_type" {
   type = map(any)
   default = {
-    k8s_full = "t2.small"
-    dind     = "t2.medium"
-    minikube = "t2.medium"
+    k8s_full = "t3.small"  #2 vCPU/2 GiB RAM | 0.0208 USD per Hour
+    dind     = "t2.medium" #2 vCPU/4 GiB RAM | 0.0464 USD per Hour 
+    minikube = "t2.medium" #2 vCPU/4 GiB RAM | 0.0464 USD per Hour
   }
   description = "Requires at least 2 cpu and 2 memory"
 }
@@ -57,16 +57,25 @@ variable "disk_type" {
   description = "GP3 gives optimized speed"
 }
 
-variable "k8s_full_ammount" {
+variable "k8s_full_cluster_ammount" {
   default     = "3"
-  description = "Ammount of K8S cluster ore minikube nodes count"
+  description = "Ammount of FULL K8S cluster"
+}
+
+variable "k8s_mini_cluster_ammount" {
+  default     = "1"
+  description = "Ammount of EC2 instance on MINI K8S cluster such as dind ore minikube (NOT K8S FULL cluster)"
+}
+
+variable "k8s_minikube_nodes_ammount" {
+  default     = "3"
+  description = "Ammount of nodes in minikude EC2 instance"
 }
 
 variable "k8s_type" {
-  default     = "minikube"
+  default     = "k8s_full"
   description = "Must be k8s_full ore dind ore minikube"
 }
-
 
 #----------- VPC variables -----------#
 

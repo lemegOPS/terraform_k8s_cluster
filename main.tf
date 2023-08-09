@@ -5,17 +5,22 @@ locals {
 }
 
 module "aws-instance" {
-  source             = "./modules/aws-instance"
-  instance_type      = var.instance_type
-  tags               = var.tags
-  ami_image          = var.ami_image
-  vpc_security_group = module.aws-security-group.security_group_id
-  global_name        = local.global_name
-  private_key_name   = module.aws-private-key.private_key_name
-  disk_size          = var.disk_size
-  disk_type          = var.disk_type
-  k8s_type           = var.k8s_type
-  k8s_full_ammount   = var.k8s_full_ammount
+  source                     = "./modules/aws-instance"
+  instance_type              = var.instance_type
+  tags                       = var.tags
+  ami_image                  = var.ami_image
+  vpc_security_group         = module.aws-security-group.security_group_id
+  global_name                = local.global_name
+  private_key_name           = module.aws-private-key.private_key_name
+  disk_size                  = var.disk_size
+  disk_type                  = var.disk_type
+  k8s_type                   = var.k8s_type
+  k8s_full_cluster_ammount   = var.k8s_full_cluster_ammount
+  k8s_mini_cluster_ammount   = var.k8s_mini_cluster_ammount
+  k8s_minikube_nodes_ammount = var.k8s_minikube_nodes_ammount
+  iam_role_name              = module.aws-iam.iam_role_name
+  bucket_name                = module.aws-s3.bucket_name
+  depends_on                 = [module.aws-iam]
 }
 
 module "aws-private-key" {
@@ -31,7 +36,6 @@ module "aws-s3" {
   profile     = var.profile
   global_name = local.global_name
   bucket_name = local.bucket_name
-  depends_on  = [module.aws-instance]
 }
 
 module "aws-security-group" {
@@ -43,8 +47,16 @@ module "aws-security-group" {
   global_name       = local.global_name
   tags              = var.tags
   local_external_ip = var.local_external_ip
+  default_subnets   = module.aws-vpc.default_vpc_subnets
 }
 
 module "aws-vpc" {
   source = "./modules/aws-vpc"
+}
+
+module "aws-iam" {
+  source      = "./modules/aws-iam"
+  global_name = local.global_name
+  bucket_name = module.aws-s3.bucket_name
+  tags        = var.tags
 }

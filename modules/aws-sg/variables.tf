@@ -5,3 +5,4 @@ variable "global_name" {}
 variable "vpc_id" {}
 variable "tags" {}
 variable "local_external_ip" {}
+variable "default_subnets" {}
