@@ -14,9 +14,6 @@ sudo usermod -a -G docker ec2-user
 
 
 #----- K8S tools install -----#
-#curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#sudo install -m 0777 kubectl /usr/bin/kubectl
-
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
