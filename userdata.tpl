@@ -14,6 +14,8 @@ sudo usermod -a -G docker ec2-user
 
 
 #----- K8S tools install -----#
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -m 0777 kubectl /usr/bin/kubectl
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -34,6 +36,12 @@ sudo systemctl start kubelet
 #----- K8S 3 separated nodes cluster install -----#
 #----- Master node -----#
 %{ if K8S_role == "Master" }
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sudo sysctl --system
+sudo swapoff -a
 echo '#!/bin/bash' > /tmp/k8s_join.sh
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 | grep -A 1 "kubeadm join" >> /tmp/k8s_join.sh
 sudo mkdir -p /root/.kube
@@ -46,15 +54,22 @@ sudo kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-rou
 
 #----- Worker node -----#
 %{ if K8S_role == "Worker" }
-sleep 60
+sleep 120
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sudo sysctl --system
+sudo swapoff -a
 sudo mkdir -p /root/.kube
+curl http://169.254.169.254/latest/meta-data/iam/info
 sudo aws s3 cp s3://${bucket_name}/config /root/.kube/config
 sudo chown root:root /root/.kube/config
 sudo aws s3 cp s3://${bucket_name}/k8s_join.sh /tmp/k8s_join.sh
 sudo chmod +x /tmp/k8s_join.sh
 sudo ./tmp/k8s_join.sh
 sudo kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
-sleep 30
+sleep 60
 sudo kubectl label node $(cat /etc/hostname) node-role.kubernetes.io/worker=worker
 %{ endif }
 
