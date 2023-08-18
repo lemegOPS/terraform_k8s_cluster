@@ -40,6 +40,7 @@ cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
+sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
 echo '#!/bin/bash' > /tmp/k8s_join.sh
@@ -49,7 +50,7 @@ sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
 sudo chown root:root /root/.kube/config
 sudo aws s3 cp /tmp/k8s_join.sh s3://${bucket_name}/k8s_join.sh
 sudo aws s3 cp /etc/kubernetes/admin.conf s3://${bucket_name}/config
-sudo kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 %{ endif }
 
 #----- Worker node -----#
@@ -59,6 +60,7 @@ cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
+sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
 sudo mkdir -p /root/.kube
@@ -68,7 +70,7 @@ sudo chown root:root /root/.kube/config
 sudo aws s3 cp s3://${bucket_name}/k8s_join.sh /tmp/k8s_join.sh
 sudo chmod +x /tmp/k8s_join.sh
 sudo ./tmp/k8s_join.sh
-sudo kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 sleep 60
 sudo kubectl label node $(cat /etc/hostname) node-role.kubernetes.io/worker=worker
 %{ endif }
