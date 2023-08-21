@@ -39,7 +39,7 @@ module "aws-s3" {
 }
 
 module "aws-security-group" {
-  source                = "./modules/aws-sg"
+  source                = "./modules/aws-security-group"
   vpc_id                = module.aws-vpc.vpc_id
   sg_port               = var.sg_port
   cidr_block            = var.cidr_block
@@ -49,7 +49,6 @@ module "aws-security-group" {
   local_external_ip     = var.local_external_ip
   default_subnets       = module.aws-vpc.default_vpc_subnets
   k8s_full_external_ips = module.aws-instance.k8s_full_external_ips
-  #depends_on = [module.aws-instance]
 }
 
 module "aws-vpc" {
