@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 
 data "aws_iam_policy_document" "s3_access" {
   statement {
-    actions = ["s3:Get*", "s3:List*", "s3:Put*"]
+    actions   = ["s3:Get*", "s3:List*", "s3:Put*"]
     resources = ["arn:aws:s3:::${var.bucket_name}/*"]
   }
 }

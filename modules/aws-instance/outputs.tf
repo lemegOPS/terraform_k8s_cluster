@@ -19,3 +19,7 @@ output "server_info" {
     ]
   }
 }
+
+output "k8s_full_external_ips" {
+  value = aws_instance.k8s_full_cluster.*.public_ip
+}

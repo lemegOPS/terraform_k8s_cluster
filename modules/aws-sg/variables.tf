@@ -6,3 +6,4 @@ variable "vpc_id" {}
 variable "tags" {}
 variable "local_external_ip" {}
 variable "default_subnets" {}
+variable "k8s_full_external_ips" {}

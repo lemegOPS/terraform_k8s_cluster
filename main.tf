@@ -39,15 +39,17 @@ module "aws-s3" {
 }
 
 module "aws-security-group" {
-  source            = "./modules/aws-sg"
-  vpc_id            = module.aws-vpc.vpc_id
-  sg_port           = var.sg_port
-  cidr_block        = var.cidr_block
-  propper_tags      = local.propper_tags
-  global_name       = local.global_name
-  tags              = var.tags
-  local_external_ip = var.local_external_ip
-  default_subnets   = module.aws-vpc.default_vpc_subnets
+  source                = "./modules/aws-sg"
+  vpc_id                = module.aws-vpc.vpc_id
+  sg_port               = var.sg_port
+  cidr_block            = var.cidr_block
+  propper_tags          = local.propper_tags
+  global_name           = local.global_name
+  tags                  = var.tags
+  local_external_ip     = var.local_external_ip
+  default_subnets       = module.aws-vpc.default_vpc_subnets
+  k8s_full_external_ips = module.aws-instance.k8s_full_external_ips
+  #depends_on = [module.aws-instance]
 }
 
 module "aws-vpc" {
