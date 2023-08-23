@@ -90,7 +90,7 @@ variable "cidr_block" {
 }
 
 variable "sg_port" {
-  default     = ["22", "80", "443", "8080"]
+  default     = ["22", "80", "443", "8080", "6443"]
   description = "Ports for Security group"
 }
 
