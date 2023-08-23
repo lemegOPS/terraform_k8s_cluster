@@ -77,6 +77,7 @@ variable "k8s_type" {
   description = "Must be k8s_full ore dind ore minikube"
 }
 
+
 #----------- VPC variables -----------#
 
 variable "cidr_block" {
@@ -89,8 +90,8 @@ variable "cidr_block" {
 }
 
 variable "sg_port" {
-  default     = ["22", "80", "443"]
-  description = "Ports for Security groupю"
+  default     = ["22", "80", "443", "8080"]
+  description = "Ports for Security group"
 }
 
 variable "local_external_ip" {

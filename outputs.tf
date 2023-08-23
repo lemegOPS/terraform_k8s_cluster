@@ -4,6 +4,7 @@ output "bucket_name" {
   description = "Show created bucket name for this module"
 }
 
+
 #---------- VPC output ----------#
 output "vpc_id" {
   value = module.aws-vpc.vpc_id
@@ -12,6 +13,7 @@ output "vpc_id" {
 output "local_external_ip" {
   value = module.aws-security-group.local_external_ip
 }
+
 
 #---------- Server output ----------#
 output "server_info" {

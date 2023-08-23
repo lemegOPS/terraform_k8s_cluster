@@ -33,7 +33,7 @@ resource "aws_s3_object" "bucket_tfstate_upload" {
   key    = lower("${var.bucket_name}/terraform.tfstate")
   tags   = merge(var.tags, { Name = "${var.global_name}" })
 }
-/*
+
 data "terraform_remote_state" "bucket_tfstate_data" {
   backend = "s3"
   config = {
@@ -43,4 +43,3 @@ data "terraform_remote_state" "bucket_tfstate_data" {
     profile = var.profile
   }
 }
-*/
