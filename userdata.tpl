@@ -78,6 +78,7 @@ sudo kubectl label node $(cat /etc/hostname) node-role.kubernetes.io/worker=work
 
 #----- Minikube install -----#
 %{ if k8s_type == "minikube" }
+sudo hostnamectl set-hostname ${k8s_type }
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install -o root -g root -m 0755 minikube-linux-amd64 /usr/bin/minikube
 sudo minikube start --nodes ${k8s_minikube_nodes_ammount} --force
@@ -91,6 +92,7 @@ sudo kubectl label $(sudo kubectl get no --no-headers --output=NAME|grep minikub
 
 #----- K8S dind install -----#
 %{ if k8s_type == "dind" }
+sudo hostnamectl set-hostname ${k8s_type }
 wget -O dind-cluster.sh https://github.com/kubernetes-retired/kubeadm-dind-cluster/releases/download/v0.3.0/dind-cluster-v1.15.sh
 chmod +x dind-cluster.sh
 sudo install -o root -g root -m 0755  dind-cluster.sh /usr/bin/dind_cluster

@@ -17,18 +17,6 @@ resource "aws_instance" "k8s_mini" {
   vpc_security_group_ids      = [var.vpc_security_group]
   associate_public_ip_address = true
 
-  provisioner "remote-exec" {
-    connection {
-      host        = self.public_ip
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("${var.global_name}_id_rsa.pem")
-    }
-    inline = [
-      "sudo hostnamectl set-hostname ${var.k8s_type}"
-    ]
-  }
-
   user_data = templatefile("userdata.tpl", {
     k8s_minikube_nodes_ammount = var.k8s_minikube_nodes_ammount,
     k8s_type                   = var.k8s_type,
