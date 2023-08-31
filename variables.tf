@@ -83,8 +83,9 @@ variable "k8s_type" {
 variable "cidr_block" {
   type = map(any)
   default = {
-    external = "0.0.0.0/0"
-    internal = "10.0.0.0/16"
+    external    = "0.0.0.0/0"
+    internal    = "10.0.0.0/16"
+    k8s_network = "10.244.0.0/16"
   }
   description = "Cidr Block map. Use for network"
 }

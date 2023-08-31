@@ -20,6 +20,7 @@ module "aws-instance" {
   k8s_minikube_nodes_ammount = var.k8s_minikube_nodes_ammount
   iam_role_name              = module.aws-iam.iam_role_name
   bucket_name                = module.aws-s3.bucket_name
+  k8s_network                = var.cidr_block
   depends_on                 = [module.aws-iam]
 }
 

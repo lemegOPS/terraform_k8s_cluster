@@ -12,3 +12,4 @@ variable "k8s_mini_cluster_ammount" {}
 variable "k8s_minikube_nodes_ammount" {}
 variable "iam_role_name" {}
 variable "bucket_name" {}
+variable "k8s_network" {}

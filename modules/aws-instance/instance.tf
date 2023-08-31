@@ -18,10 +18,11 @@ resource "aws_instance" "k8s_mini" {
   associate_public_ip_address = true
 
   user_data = templatefile("userdata.tpl", {
-    k8s_minikube_nodes_ammount = var.k8s_minikube_nodes_ammount,
-    k8s_type                   = var.k8s_type,
+    k8s_minikube_nodes_ammount = var.k8s_minikube_nodes_ammount
+    k8s_type                   = var.k8s_type
     K8S_role                   = "none"
     bucket_name                = "none"
+    k8s_network                = "none"
   })
 
   lifecycle {
@@ -66,10 +67,11 @@ resource "aws_instance" "k8s_full_cluster" {
   }
 
   user_data = templatefile("userdata.tpl", {
-    K8S_role                   = count.index == 0 ? "Master" : "Worker"
     k8s_minikube_nodes_ammount = "none"
-    k8s_type                   = "none"
+    k8s_type                   = var.k8s_type
+    K8S_role                   = count.index == 0 ? "Master" : "Worker"
     bucket_name                = var.bucket_name
+    k8s_network                = var.k8s_network["k8s_network"]
   })
 
   lifecycle {
