@@ -41,6 +41,7 @@ EOF
 sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
+sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
 %{ endif }
 
 #----- Master node -----#
