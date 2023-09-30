@@ -56,7 +56,7 @@ sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
 sudo chown root:root /root/.kube/config
 sudo aws s3 cp /tmp/k8s_join.sh s3://${bucket_name}/k8s_join.sh
 sudo aws s3 cp /etc/kubernetes/admin.conf s3://${bucket_name}/config
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+sudo kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 %{ endif }
 
@@ -69,7 +69,6 @@ sudo chown root:root /root/.kube/config
 sudo aws s3 cp s3://${bucket_name}/k8s_join.sh /tmp/k8s_join.sh
 sudo chmod +x /tmp/k8s_join.sh
 sudo ./tmp/k8s_join.sh
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 sleep 60
 sudo kubectl label node $(cat /etc/hostname) node-role.kubernetes.io/worker=worker
 %{ endif }
