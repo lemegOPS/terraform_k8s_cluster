@@ -2,6 +2,8 @@
 #----- System prepare -----#
 sudo yum update -y
 sudo yum install -y git docker go vi
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 #----- Docker\Docker-compose install -----#
 wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
@@ -11,33 +13,34 @@ sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
-
 #----- K8S tools install -----#
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -m 0777 kubectl /usr/bin/kubectl
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 
-sudo yum install -y kubelet kubeadm kubectl
-sudo systemctl enable kubelet
-sudo systemctl start kubelet
+sudo yum install -y kubelet kubeadm kubectl 
+sudo systemctl enable --now kubelet
 #---------------------------------------------------------------------#
-
 
 #----- K8S cluster install -----#
 #----- K8S 3 separated nodes cluster install -----#
 %{ if k8s_type== "k8s_full" }
-cat <<EOF > /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
 EOF
+
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
 sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
@@ -59,7 +62,7 @@ sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx
 
 #----- Worker node -----#
 %{ if K8S_role == "Worker" }
-sleep 120
+sleep 90
 sudo mkdir -p /root/.kube
 sudo aws s3 cp s3://${bucket_name}/config /root/.kube/config
 sudo chown root:root /root/.kube/config

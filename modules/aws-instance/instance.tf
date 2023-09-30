@@ -51,7 +51,7 @@ resource "aws_instance" "k8s_full_cluster" {
   instance_type               = lookup(var.instance_type, var.k8s_type)
   key_name                    = var.private_key_name
   vpc_security_group_ids      = [var.vpc_security_group]
-  associate_public_ip_address = true
+  associate_public_ip_address = count.index == 1 ? true : false
   iam_instance_profile        = var.iam_role_name
 
   provisioner "remote-exec" {
