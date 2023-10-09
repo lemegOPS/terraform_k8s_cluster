@@ -1,7 +1,7 @@
 #!/bin/bash
 #----- System prepare -----#
 sudo yum update -y
-sudo yum install -y git docker go vi
+sudo yum install -y git docker go vi jq
 sudo setenforce 0
 sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
