@@ -45,6 +45,11 @@ sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
 sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
+
+sudo source <(kubectl completion bash)
+sudo echo "source <(kubectl completion bash)" >> ~/.bashrc
+sudo alias k=kubectl
+sudo complete -o default -F __start_kubectl k
 %{ endif }
 
 #----- Master node -----#
