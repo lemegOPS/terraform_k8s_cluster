@@ -47,7 +47,7 @@ sudo swapoff -a
 sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
 
 sudo source <(kubectl completion bash)
-sudo echo "source <(kubectl completion bash)" >> /root/bashrc
+sudo echo "source <(kubectl completion bash)" >> /root/.bashrc
 sudo echo "alias k=kubectl" >> /root/.bashrc
 sudo complete -o default -F __start_kubectl k
 %{ endif }
