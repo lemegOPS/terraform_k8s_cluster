@@ -49,12 +49,21 @@ sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
 sudo echo 'source <(kubectl completion bash)' >> /root/.bashrc
 sudo echo "source <(kubectl completion bash)" >> /root/.bashrc
 sudo echo "alias k=kubectl" >> /root/.bashrc
-sudo echo "alias kn=k config set-context --current  --namespace" >> /root/.bashrc
-sudo echo "alias kpo=k get po" >> /root/.bashrc
-sudo echo "alias kde=k get deploy" >> /root/.bashrc
-sudo echo "alias ked=k edit" >> /root/.bashrc
-
+sudo echo "alias kn=kubectl config set-context --current  --namespace" >> /root/.bashrc
+sudo echo "alias kpo=kubectl get po" >> /root/.bashrc
+sudo echo "alias kde=kubectl get deploy" >> /root/.bashrc
+sudo echo "alias ked=kubectl edit" >> /root/.bashrc
 sudo complete -o default -F __start_kubectl k
+
+cat <<EOF | sudo tee /root/.vimrc
+set tabstop=2 softtabstop=2 shiftwidth=2
+set expandtab
+set number ruler
+set autoindent smartindent
+syntax enable
+filetype plugin indent on
+EOF
+
 %{ endif }
 
 #----- Master node -----#
