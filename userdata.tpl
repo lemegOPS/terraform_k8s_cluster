@@ -46,9 +46,14 @@ sudo sysctl --system
 sudo swapoff -a
 sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
 
-sudo source <(kubectl completion bash)
+sudo echo 'source <(kubectl completion bash)' >> /root/.bashrc
 sudo echo "source <(kubectl completion bash)" >> /root/.bashrc
 sudo echo "alias k=kubectl" >> /root/.bashrc
+sudo echo "alias kn=k config set-context --current  --namespace" >> /root/.bashrc
+sudo echo "alias kpo=k get po" >> /root/.bashrc
+sudo echo "alias kde=k get deploy" >> /root/.bashrc
+sudo echo "alias ked=k edit" >> /root/.bashrc
+
 sudo complete -o default -F __start_kubectl k
 %{ endif }
 
