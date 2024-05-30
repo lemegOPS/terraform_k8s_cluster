@@ -4,7 +4,8 @@ sudo yum update -y
 sudo yum install -y git docker go vi jq
 sudo setenforce 0
 sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-
+sudo yum install bash-completion
+sudo source /usr/share/bash-completion/bash_completion
 #----- Docker\Docker-compose install -----#
 wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
 sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/bin/docker-compose
@@ -13,17 +14,21 @@ sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
+
+// sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+// sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
 #----- K8S tools install -----#
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
 enabled=1
 gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
 EOF
 
-sudo yum install -y kubelet kubeadm kubectl 
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes --disableplugin=priorities
 sudo systemctl enable --now kubelet
 #---------------------------------------------------------------------#
 
@@ -47,12 +52,16 @@ sudo swapoff -a
 sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
 
 sudo echo "source <(kubectl completion bash)" >> /root/.bashrc
-sudo echo "alias k=kubectl" >> /root/.bashrc
-sudo echo "alias kn=kubectl config set-context --current  --namespace" >> /root/.bashrc
-sudo echo "alias kpo=kubectl get po" >> /root/.bashrc
-sudo echo "alias kde=kubectl get deploy" >> /root/.bashrc
-sudo echo "alias ked=kubectl edit" >> /root/.bashrc
+sudo echo "alias k='kubectl'" >> /root/.bashrc
+sudo echo "alias kn='kubectl config set-context --current  --namespace'" >> /root/.bashrc
+sudo echo "alias kpo='kubectl get po'" >> /root/.bashrc
+sudo echo "alias kde='kubectl get deploy'" >> /root/.bashrc
+sudo echo "alias ked='kubectl edit'" >> /root/.bashrc
+sudo echo "alias kno='kubectl get no'" >> /root/.bashrc
+sudo source /root/.bashrc
 sudo complete -o default -F __start_kubectl k
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+sudo chmod a+r /etc/bash_completion.d/kubectl
 
 cat <<EOF | sudo tee /root/.vimrc
 set tabstop=2 softtabstop=2 shiftwidth=2
