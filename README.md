@@ -125,3 +125,9 @@ kube-master   Ready    master   5m39s   v1.14.1
 kube-node-1   Ready    <none>   4m19s   v1.14.1
 kube-node-2   Ready    <none>   4m19s   v1.14.1
 ```
+
+
+**TO DOO:**
+- add Route53
+- add helm with autodeploy first app
+- add ingress.yaml
