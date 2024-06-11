@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "k8s_full_allow_master_to_worker_internal" {
 }
 
 resource "aws_security_group_rule" "k8s_full_master_worker_snat" {
-  description       = "Allow external connection from master (for kuberbetes svc external-ip)"
+  description       = "Allow external connection to master (for kuberbetes svc external-ip)"
   security_group_id = aws_security_group.vpc_security_group.id
   type              = "ingress"
   from_port         = 0

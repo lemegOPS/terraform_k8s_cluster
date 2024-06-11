@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: web
+  name: web
+spec:
+  containers:
+  - image: nginx
+    name: web
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: web
+  name: web-service
+spec:
+  externalIPs:
+  - 'Add nodes IP'
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: web
+status:
+  loadBalancer: {}

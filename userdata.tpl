@@ -15,9 +15,6 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 
-// sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-// sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
 #----- K8S tools install -----#
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -32,6 +29,14 @@ sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes --disab
 sudo systemctl enable --now kubelet
 #---------------------------------------------------------------------#
 
+#----- Helm install -----#
+curl -o helm-v3.10.3-linux-amd64.tar.gz https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz
+chmod 777 helm-v3.10.3-linux-amd64.tar.gz
+tar -zxvf helm-v3.10.3-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/sbin/helm
+ll /usr/local/bin/helm
+#---------------------------------------------------------------------#
+
 #----- K8S cluster install -----#
 #----- K8S 3 separated nodes cluster install -----#
 %{ if k8s_type== "k8s_full" }
@@ -40,13 +45,15 @@ overlay
 br_netfilter
 EOF
 
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
 cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.ip_forward                 = 1
 EOF
 
-sudo modprobe br_netfilter
 sudo sysctl --system
 sudo swapoff -a
 sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
@@ -83,8 +90,19 @@ sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
 sudo chown root:root /root/.kube/config
 sudo aws s3 cp /tmp/k8s_join.sh s3://${bucket_name}/k8s_join.sh
 sudo aws s3 cp /etc/kubernetes/admin.conf s3://${bucket_name}/config
+
+
+kubectl get configmap kube-proxy -n kube-system -o yaml | \
+sed -e "s/strictARP: false/strictARP: true/" | \
+kubectl diff -f - -n kube-system
+
 sudo kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+
+// kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+// kubectl edit configmap -n kube-system kube-proxy
+// kubectl patch svc frontend -p '{"spec":{"externalIPs":["192.168.0.194"]}}'
 %{ endif }
 
 #----- Worker node -----#
